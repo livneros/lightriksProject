@@ -12,7 +12,7 @@ public class WeightFunction {
         this.epsilon = epsilon;
     }
 
-    static WeightFunction getInstance(double powerFactor, double epsilon) {
+    public static WeightFunction getInstance(double powerFactor, double epsilon) {
         if (mInstance == null) {
             mInstance = new WeightFunction(powerFactor, epsilon);
         }
