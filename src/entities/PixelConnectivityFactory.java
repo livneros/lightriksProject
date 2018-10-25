@@ -20,7 +20,7 @@ public class PixelConnectivityFactory {
         }
     }
 
-    public static PixelConnectivity getPixelConnectivity(int type, ArrayList<ArrayList<Integer>> image)
+    public static PixelConnectivity getPixelConnectivity(int type, Image image)
             throws UnSupportedConnectivityType {
         switch (type){
             case 8:

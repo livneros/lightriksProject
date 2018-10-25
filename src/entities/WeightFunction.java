@@ -2,6 +2,8 @@ package entities;
 
 import entities.implementations.CoordinateImpl;
 
+import java.util.Map;
+
 public class WeightFunction {
     private static WeightFunction mInstance;
     private double powerFactor;
@@ -23,6 +25,18 @@ public class WeightFunction {
         double euclideanDistance = coordinateImpl.euclideanDistance(u, v);
         double denominator = Math.pow(euclideanDistance, this.powerFactor) + this.epsilon;
         return Math.pow(denominator, -1);
+    }
+
+    double solve(Coordinate u, Map<Coordinate, Double> boundaries, CoordinateImpl coordinateImpl){
+        double up = 0.0;
+        double down = 0.0;
+        double euclideanDis;
+        for(Coordinate boundary: boundaries.keySet()){
+            euclideanDis = solve(u, boundary, coordinateImpl);
+            down += euclideanDis;
+            up += (euclideanDis * boundaries.get(boundary));
+        }
+        return up / down;
     }
 
     double getPowerFactor() {

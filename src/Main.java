@@ -1,8 +1,6 @@
 
-import entities.PixelConnectivity;
-import entities.PixelConnectivityFactory;
-import entities.UnSupportedConnectivityType;
-import entities.WeightFunction;
+import entities.*;
+import entities.implementations.CoordinateImpl;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 import utils.Utils;
@@ -21,10 +19,19 @@ public class Main {
         double epsilon = Double.valueOf(args[2]);
         int connectivityType = Integer.valueOf(args[3]);
 
-        ArrayList<ArrayList<Integer>> image = Utils.readImage(imagePath);
-
+        ArrayList<ArrayList<Double>> imageArr = Utils.readImage(imagePath);
+        for(int row = 1; row < 30; row++){
+            for(int i = 1; i< 30; i++){
+                imageArr.get(row).set(i, -2.0);
+            }
+        }
+        Image image = new Image(imageArr);
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
         PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType, image);
+        HoleImage holeImage = new HoleImage(image, weightFunction, pixelConnectivity, new CoordinateImpl());
+        holeImage.findHoles();
+        holeImage.findBoundaries();
+        holeImage.fillHoles();
 
 //        File input = new File(imagePath);
 //        BufferedImage image = ImageIO.read(input);

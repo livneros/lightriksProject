@@ -1,6 +1,7 @@
 package entities;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by livne
@@ -8,23 +9,24 @@ import java.util.ArrayList;
  */
 public class EightConnected extends PixelConnectivity {
 
-    public EightConnected(ArrayList<ArrayList<Integer>> image) {
+    public EightConnected(Image image) {
         super(image);
     }
 
     @Override
-    public boolean isBoundary(Coordinate coordinate) {
+    public Map<Coordinate, Double> getBoundaries(Coordinate coordinate) {
+        Map<Coordinate, Double> boundaries = new HashMap<>();
         for(int row = coordinate.getLeftUpperCornerRow(); row <= coordinate.getRightLowerCornerRow(); row++ ) {
             for (int col = coordinate.getLeftUpperCornerCol(); col <= coordinate.getRightLowerCornerCol(); col++) {
                 if(coordinate.isItTheSameCoordinate(row, col)){
                     continue;
                 }
-                if(image.get(row).get(col) == HOLE){
-                    return true;
+                if(!image.isHole(row, col)){
+                    boundaries.put(new Coordinate(row, col), image.getImage().get(row).get(col));
                 }
             }
         }
-        return false;
+        return boundaries;
     }
 
 }

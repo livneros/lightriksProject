@@ -23,20 +23,20 @@ public class Utils {
      * @return array of arrays, that holds an array represents a pixel. row -> col -> pixel.
      * @throws IOException - on a broken path.
      */
-    public static ArrayList<ArrayList<Integer>> readImage(String path) throws IOException {
+    public static ArrayList<ArrayList<Double>> readImage(String path) throws IOException {
         File imgPath = new File(path);
         BufferedImage bufferedImage = ImageIO.read(imgPath);
         return convertTo2DWithoutUsingGetRGB(bufferedImage);
     }
-    private static ArrayList<ArrayList<Integer>> convertTo2DWithoutUsingGetRGB(BufferedImage image) {
+    private static ArrayList<ArrayList<Double>> convertTo2DWithoutUsingGetRGB(BufferedImage image) {
 
         final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         final int width = image.getWidth();
-        ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
-        ArrayList<Integer> cols = new ArrayList<>();
+        ArrayList<ArrayList<Double>> rows = new ArrayList<>();
+        ArrayList<Double> cols = new ArrayList<>();
         int pixelLength = image.getRaster().getNumBands();
         for (int pixelIndex = 0, col = 0; pixelIndex < pixels.length; pixelIndex += pixelLength) {
-            int argb = buildPixel(pixels, pixelLength, pixelIndex);
+            Double argb = buildPixel(pixels, pixelLength, pixelIndex);
             cols.add(argb);
             col++;
             if (isEndOfRow(width, col)) {
@@ -59,9 +59,9 @@ public class Utils {
      * @param pixelIndex - index for the pixels beginning in the pixels list.
      * @return an array represents a pixel.
      */
-    private static Integer buildPixel(byte[] pixels, int pixelLength, int pixelIndex) {
-        return ((int)pixels[pixelIndex]);
-//        ArrayList<Integer> builtPixel = new ArrayList<>();
+    private static Double buildPixel(byte[] pixels, int pixelLength, int pixelIndex) {
+        return ((double)pixels[pixelIndex]);
+//        ArrayList<Double> builtPixel = new ArrayList<>();
 //        if(pixelLength == 1){
 //            builtPixel.add((int) pixels[pixelIndex]);
 //            return builtPixel;

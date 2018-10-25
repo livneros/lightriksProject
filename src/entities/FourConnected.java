@@ -1,8 +1,9 @@
 package entities;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by livne
@@ -13,20 +14,25 @@ public class FourConnected extends PixelConnectivity{
     private static final int STEP_DOWN_OR_LEFT = -1;
     private static final int STEP_UP_OR_RIGHT = 1;
 
-    public FourConnected(ArrayList<ArrayList<Integer>> image) {
+    public FourConnected(Image image) {
         super(image);
     }
 
     @Override
-    public boolean isBoundary(Coordinate coordinate) {
+    public Map<Coordinate, Double> getBoundaries(Coordinate coordinate) {
+        Map<Coordinate, Double> boundaries = new HashMap<>();
         List<Integer> possibleMovements = Arrays.asList(STEP_UP_OR_RIGHT, STEP_DOWN_OR_LEFT);
+        int specRow;
+        int specCol;
         for(int row: possibleMovements){
             for(int col: possibleMovements){
-                if(image.get(coordinate.getRow() + row).get(coordinate.getCol() + col) == HOLE){
-                    return true;
+                specRow = coordinate.getRow() + row;
+                specCol = coordinate.getCol() + col;
+                if(image.isHole(specRow, specCol)){
+                    boundaries.put(new Coordinate(specRow, specCol), image.getImage().get(specRow).get(specCol));
                 }
             }
         }
-        return false;
+        return boundaries;
     }
 }
