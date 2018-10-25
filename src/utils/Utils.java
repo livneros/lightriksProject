@@ -23,20 +23,20 @@ public class Utils {
      * @return array of arrays, that holds an array represents a pixel. row -> col -> pixel.
      * @throws IOException - on a broken path.
      */
-    public static ArrayList<ArrayList<ArrayList<Integer>>> readImage(String path) throws IOException {
+    public static ArrayList<ArrayList<Integer>> readImage(String path) throws IOException {
         File imgPath = new File(path);
         BufferedImage bufferedImage = ImageIO.read(imgPath);
         return convertTo2DWithoutUsingGetRGB(bufferedImage);
     }
-    private static ArrayList<ArrayList<ArrayList<Integer>>> convertTo2DWithoutUsingGetRGB(BufferedImage image) {
+    private static ArrayList<ArrayList<Integer>> convertTo2DWithoutUsingGetRGB(BufferedImage image) {
 
         final byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         final int width = image.getWidth();
-        ArrayList<ArrayList<ArrayList<Integer>>> rows = new ArrayList<>();
-        ArrayList<ArrayList<Integer>> cols = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> rows = new ArrayList<>();
+        ArrayList<Integer> cols = new ArrayList<>();
         int pixelLength = image.getRaster().getNumBands();
         for (int pixelIndex = 0, col = 0; pixelIndex < pixels.length; pixelIndex += pixelLength) {
-            ArrayList<Integer> argb = buildPixel(pixels, pixelLength, pixelIndex);
+            int argb = buildPixel(pixels, pixelLength, pixelIndex);
             cols.add(argb);
             col++;
             if (isEndOfRow(width, col)) {
@@ -59,16 +59,17 @@ public class Utils {
      * @param pixelIndex - index for the pixels beginning in the pixels list.
      * @return an array represents a pixel.
      */
-    private static ArrayList<Integer> buildPixel(byte[] pixels, int pixelLength, int pixelIndex) {
-        ArrayList<Integer> builtPixel = new ArrayList<>();
-        if(pixelLength == 1){
-            builtPixel.add((int) pixels[pixelIndex]);
-            return builtPixel;
-        }
-        builtPixel.add((int) pixels[getRedPosition(pixelLength, pixelIndex)]); // red
-        builtPixel.add((int) pixels[getGreenPosition(pixelLength, pixelIndex)]); // green
-        builtPixel.add((int) pixels[getBluePosition(pixelLength, pixelIndex)]); // blue
-        return builtPixel;
+    private static Integer buildPixel(byte[] pixels, int pixelLength, int pixelIndex) {
+        return ((int)pixels[pixelIndex]);
+//        ArrayList<Integer> builtPixel = new ArrayList<>();
+//        if(pixelLength == 1){
+//            builtPixel.add((int) pixels[pixelIndex]);
+//            return builtPixel;
+//        }
+//        builtPixel.add((int) pixels[getRedPosition(pixelLength, pixelIndex)]); // red
+//        builtPixel.add((int) pixels[getGreenPosition(pixelLength, pixelIndex)]); // green
+//        builtPixel.add((int) pixels[getBluePosition(pixelLength, pixelIndex)]); // blue
+//        return builtPixel;
     }
 
     private static int getRedPosition(int pixelLength, int pixel) {

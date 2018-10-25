@@ -1,6 +1,7 @@
 
 import entities.PixelConnectivity;
 import entities.PixelConnectivityFactory;
+import entities.UnSupportedConnectivityType;
 import entities.WeightFunction;
 import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
@@ -14,16 +15,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, UnSupportedConnectivityType {
         String imagePath = args[0];
         double powerFactor = Double.valueOf(args[1]);
         double epsilon = Double.valueOf(args[2]);
         int connectivityType = Integer.valueOf(args[3]);
 
-        ArrayList<ArrayList<ArrayList<Integer>>> image = Utils.readImage(imagePath);
+        ArrayList<ArrayList<Integer>> image = Utils.readImage(imagePath);
 
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
-//        PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType, image);
+        PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType, image);
 
 //        File input = new File(imagePath);
 //        BufferedImage image = ImageIO.read(input);

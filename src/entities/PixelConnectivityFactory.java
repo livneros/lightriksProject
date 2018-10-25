@@ -18,14 +18,14 @@ public class PixelConnectivityFactory {
         public int getSign() {
             return sign;
         }
-
     }
-    public static PixelConnectivity getPixelConnectivity(PixelConnectivityTypes type, ArrayList<ArrayList<Integer>> image)
+
+    public static PixelConnectivity getPixelConnectivity(int type, ArrayList<ArrayList<Integer>> image)
             throws UnSupportedConnectivityType {
         switch (type){
-            case EIGHT:
+            case 8:
                 return new EightConnected(image);
-            case FOUR:
+            case 4:
                 return new FourConnected(image);
             default:
                 throw new UnSupportedConnectivityType();
