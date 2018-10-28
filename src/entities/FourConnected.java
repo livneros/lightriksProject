@@ -1,5 +1,7 @@
 package entities;
 
+import org.opencv.core.Mat;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +16,7 @@ public class FourConnected extends PixelConnectivity{
     private static final int STEP_DOWN_OR_LEFT = -1;
     private static final int STEP_UP_OR_RIGHT = 1;
 
-    public FourConnected(Image image) {
+    public FourConnected(Mat image) {
         super(image);
     }
 
@@ -28,8 +30,8 @@ public class FourConnected extends PixelConnectivity{
             for(int col: possibleMovements){
                 specRow = coordinate.getRow() + row;
                 specCol = coordinate.getCol() + col;
-                if(image.isHole(specRow, specCol)){
-                    boundaries.put(new Coordinate(specRow, specCol), image.getImage().get(specRow).get(specCol));
+                if(!isHole(specRow, specCol)){
+                    boundaries.put(new Coordinate(specRow, specCol), image.get(specRow, specCol)[0]);
                 }
             }
         }

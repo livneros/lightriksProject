@@ -1,5 +1,7 @@
 package entities;
 
+import org.opencv.core.Mat;
+
 import java.util.Map;
 
 /**
@@ -7,13 +9,19 @@ import java.util.Map;
  * on 25/10/2018.
  */
 public abstract class PixelConnectivity {
-    protected Image image;
+    private static final double HOLE = 0.0;
+    protected Mat image;
 
-    public PixelConnectivity(Image image) {
+    public PixelConnectivity(Mat image) {
         this.image = image;
     }
 
-    public Image getImage() {
+
+    boolean isHole(int row, int col) {
+        return image.get(row, col)[0] == HOLE;
+    }
+
+    public Mat getImage() {
         return image;
     }
 

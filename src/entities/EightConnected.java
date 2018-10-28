@@ -1,5 +1,7 @@
 package entities;
 
+import org.opencv.core.Mat;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +11,7 @@ import java.util.Map;
  */
 public class EightConnected extends PixelConnectivity {
 
-    public EightConnected(Image image) {
+    public EightConnected(Mat image) {
         super(image);
     }
 
@@ -21,8 +23,8 @@ public class EightConnected extends PixelConnectivity {
                 if(coordinate.isItTheSameCoordinate(row, col)){
                     continue;
                 }
-                if(!image.isHole(row, col)){
-                    boundaries.put(new Coordinate(row, col), image.getImage().get(row).get(col));
+                if(!isHole(row, col)){
+                    boundaries.put(new Coordinate(row, col), image.get(row, col)[0]);
                 }
             }
         }

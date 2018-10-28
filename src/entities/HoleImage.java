@@ -1,6 +1,7 @@
 package entities;
 
 import entities.implementations.CoordinateImpl;
+import org.opencv.core.Mat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -10,14 +11,14 @@ import java.util.Map;
  * on 25/10/2018.
  */
 public class HoleImage {
-    private Image image;
+    private Mat image;
     private WeightFunction weightFunction;
     private PixelConnectivity pixelConnectivity;
     CoordinateImpl coordinateImpl;
     Map<Coordinate, Boolean> holes;
     Map<Coordinate, Double> boundaries;
 
-    public HoleImage(Image image, WeightFunction weightFunction, PixelConnectivity pixelConnectivity, CoordinateImpl coordinateImpl) {
+    public HoleImage(Mat image, WeightFunction weightFunction, PixelConnectivity pixelConnectivity, CoordinateImpl coordinateImpl) {
         this.image = image;
         this.weightFunction = weightFunction;
         this.pixelConnectivity = pixelConnectivity;
@@ -26,7 +27,7 @@ public class HoleImage {
         boundaries = new HashMap<>();
     }
 
-    public Image getImage() {
+    public Mat getImage() {
         return image;
     }
 
@@ -47,14 +48,15 @@ public class HoleImage {
     }
 
     public void findHoles(){
-        for(int row = 0; row < image.getHeight(); row++){
-            for (int col = 0; col < image.getWidth(); col++){
-                if(image.isHole(row, col)){
+        for(int row = 0; row < image.rows(); row++){
+            for (int col = 0; col < image.cols(); col++){
+                if(pixelConnectivity.isHole(row, col)){
                     holes.put(new Coordinate(row, col), true);
                 }
             }
         }
     }
+
 
     public void findBoundaries(){
         for(Coordinate coordinate: holes.keySet()){
@@ -65,7 +67,18 @@ public class HoleImage {
     public void fillHoles(){
         for(Coordinate coordinate: holes.keySet()){
             double fixedValue = weightFunction.solve(coordinate, boundaries, coordinateImpl);
-            image.setPixel(coordinate, fixedValue);
+            setPixel(coordinate, fixedValue);
         }
+    }
+
+    private void setPixel(Coordinate coordinate, double fixedValue) {
+        image.put(coordinate.getRow(), coordinate.getCol(), fixedValue);
+    }
+
+    public Mat fixHoles() {
+        findHoles();
+        findBoundaries();
+        fillHoles();
+        return image;
     }
 }

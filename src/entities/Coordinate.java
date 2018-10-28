@@ -27,7 +27,7 @@ public class Coordinate {
         return this.row + 1;
     }
     public int getRightLowerCornerCol(){
-        return this.row + 1;
+        return this.col + 1;
     }
     public int getLeftUpperCornerCol(){
         return this.col - 1;

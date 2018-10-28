@@ -1,6 +1,6 @@
 package entities;
 
-import java.util.ArrayList;
+import org.opencv.core.Mat;
 
 /**
  * Created by livne
@@ -20,7 +20,7 @@ public class PixelConnectivityFactory {
         }
     }
 
-    public static PixelConnectivity getPixelConnectivity(int type, Image image)
+    public static PixelConnectivity getPixelConnectivity(int type, Mat image)
             throws UnSupportedConnectivityType {
         switch (type){
             case 8:

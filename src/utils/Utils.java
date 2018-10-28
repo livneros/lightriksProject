@@ -36,7 +36,7 @@ public class Utils {
         ArrayList<Double> cols = new ArrayList<>();
         int pixelLength = image.getRaster().getNumBands();
         for (int pixelIndex = 0, col = 0; pixelIndex < pixels.length; pixelIndex += pixelLength) {
-            Double argb = buildPixel(pixels, pixelLength, pixelIndex);
+            Double argb = buildPixel(pixels, pixelLength, pixelIndex) / 255.0;
             cols.add(argb);
             col++;
             if (isEndOfRow(width, col)) {
