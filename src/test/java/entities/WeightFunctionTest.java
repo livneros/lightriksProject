@@ -2,6 +2,7 @@ package entities;
 
 import org.junit.Assert;
 import org.junit.Test;
+import utils.Constants;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -12,7 +13,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static utils.Constants.*;
 
 public class WeightFunctionTest {
 
@@ -34,13 +34,13 @@ public class WeightFunctionTest {
         when(weightFunction.getPowerFactor()).thenReturn(powerFactor);
         when(weightFunction.solvePerCoordinate(u, v)).thenCallRealMethod();
         double solveSol = weightFunction.solvePerCoordinate(u, v);
-        Assert.assertEquals(1, solveSol, DEFAULT_DELTA);
+        Assert.assertEquals(1, solveSol, Constants.DEFAULT_DELTA);
     }
 
     @Test
     public void solvePerCoordinate_almostZeroEpsilon() {
         powerFactor = 2;
-        epsilon = MINIMAL_EPSILON_ALLOWED;
+        epsilon = Constants.MINIMAL_EPSILON_ALLOWED;
         weightFunction = mock(WeightFunction.class);
         Coordinate u = mock(Coordinate.class);
         Coordinate v = mock(Coordinate.class);
@@ -66,7 +66,7 @@ public class WeightFunctionTest {
         when(weightFunction.getPowerFactor()).thenReturn(powerFactor);
         when(weightFunction.solvePerCoordinate(u, v)).thenCallRealMethod();
         double solveSol = weightFunction.solvePerCoordinate(u, v);
-        Assert.assertEquals(0.66667, solveSol, DEFAULT_DELTA);
+        Assert.assertEquals(0.66667, solveSol, Constants.DEFAULT_DELTA);
     }
 
     @Test
@@ -77,8 +77,8 @@ public class WeightFunctionTest {
         double secondPowerFactor = 1;
         double secondEpsilon = 5;
         WeightFunction secondWeightFunction = WeightFunction.getInstance(secondPowerFactor, secondEpsilon);
-        assertEquals(originalWeightFunction.getPowerFactor(), secondWeightFunction.getPowerFactor(), ZERO_DELTA);
-        assertEquals(originalWeightFunction.getEpsilon(), secondWeightFunction.getEpsilon(), ZERO_DELTA);
+        assertEquals(originalWeightFunction.getPowerFactor(), secondWeightFunction.getPowerFactor(), Constants.ZERO_DELTA);
+        assertEquals(originalWeightFunction.getEpsilon(), secondWeightFunction.getEpsilon(), Constants.ZERO_DELTA);
     }
 
     @Test
@@ -94,7 +94,7 @@ public class WeightFunctionTest {
         when(weightFunction.solvePerCoordinate(u, boundary)).thenReturn(euclideanDis);
         when(weightFunction.solve(u, boundaries)).thenCallRealMethod();
         double res = weightFunction.solve(u, boundaries);
-        assertEquals(boundaryValue, res, ZERO_DELTA);
+        Assert.assertEquals(boundaryValue, res, Constants.ZERO_DELTA);
     }
     @Test
     public void solve_doubleBoundary() throws Exception {
@@ -113,6 +113,6 @@ public class WeightFunctionTest {
         when(weightFunction.solvePerCoordinate(u, secondBoundary)).thenReturn(euclideanDis);
         when(weightFunction.solve(u, boundaries)).thenCallRealMethod();
         double res = weightFunction.solve(u, boundaries);
-        assertEquals(4.0, res, ZERO_DELTA);
+        Assert.assertEquals(4.0, res, Constants.ZERO_DELTA);
     }
 }

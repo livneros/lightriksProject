@@ -2,10 +2,10 @@ package entities;
 
 import org.junit.Assert;
 import org.junit.Test;
+import utils.Constants;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static utils.Constants.DEFAULT_DELTA;
 
 public class CoordinateTest {
 
@@ -26,7 +26,7 @@ public class CoordinateTest {
         when(v.getCol()).thenReturn(col);
         when(u.euclideanDistance(v)).thenCallRealMethod();
         double distance = u.euclideanDistance(v);
-        Assert.assertEquals(0, distance, DEFAULT_DELTA);
+        Assert.assertEquals(0, distance, Constants.DEFAULT_DELTA);
     }
 
     @Test
@@ -42,7 +42,7 @@ public class CoordinateTest {
         when(v.getCol()).thenReturn(col);
         when(u.euclideanDistance(v)).thenCallRealMethod();
         double distance = u.euclideanDistance(v);
-        Assert.assertEquals(0, distance, DEFAULT_DELTA);
+        Assert.assertEquals(0, distance, Constants.DEFAULT_DELTA);
     }
 
     @Test
@@ -60,7 +60,7 @@ public class CoordinateTest {
         when(v.getCol()).thenReturn(vCol);
         when(u.euclideanDistance(v)).thenCallRealMethod();
         double distance = u.euclideanDistance(v);
-        Assert.assertEquals(5, distance, DEFAULT_DELTA);
+        Assert.assertEquals(5, distance, Constants.DEFAULT_DELTA);
     }
 
     @Test

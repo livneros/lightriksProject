@@ -1,14 +1,12 @@
 import entities.*;
 import org.opencv.core.Mat;
+import utils.BadInputException;
+import utils.Constants;
 import utils.ImageUtils;
 import utils.Utils;
 import utils.exceptions.MaskImageSizeException;
 
-import javax.ws.rs.BadRequestException;
 import java.io.IOException;
-
-import static utils.Constants.MINIMAL_EPSILON_ALLOWED;
-import static utils.ImageUtils.save_image;
 
 public class Main {
 
@@ -28,7 +26,7 @@ public class Main {
     private static final String OUTPUT_FILE_NAME = "output.jpg";
     private static final int LOWEST_NON_NEGATIVE = 0;
 
-    public static void main(String[] args) throws IOException, UnSupportedConnectivityType, MaskImageSizeException {
+    public static void main(String[] args) throws IOException, UnSupportedConnectivityType, MaskImageSizeException, BadInputException {
         validateInput(args);
         double powerFactor = getPowerFactor(args[POWER_FACTOR_INDEX]);
         double epsilon = getEpsilon(args[EPSILON_INDEX]);
@@ -40,7 +38,7 @@ public class Main {
         }
         Mat outputImage = ImageUtils.getMaskedImage(imagePath, maskImagePath);
 //        mask(outputImage);
-        save_image(outputImage, "temp.jpg");
+        ImageUtils.save_image(outputImage, "temp.jpg");
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
         PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType);
         HoleImage holeImage = new HoleImage(outputImage, weightFunction, pixelConnectivity);
@@ -56,37 +54,37 @@ public class Main {
         }
     }
 
-    private static Integer getConnectivityType(String arg) {
+    private static Integer getConnectivityType(String arg) throws BadInputException {
         try{
             return Integer.valueOf(arg);
         }catch (NumberFormatException e){
-            throw new BadRequestException(POWER_FACTOR + MUST_BE_A_VALID_NUMBER);
+            throw new BadInputException(POWER_FACTOR + MUST_BE_A_VALID_NUMBER);
         }
     }
 
-    private static Double getEpsilon(String arg) {
+    private static Double getEpsilon(String arg) throws BadInputException {
         try{
             double epsilon =  Double.valueOf(arg);
-            if(epsilon <= MINIMAL_EPSILON_ALLOWED) throw new BadRequestException(EPSILON + MUST_BE_POSITIVE);
+            if(epsilon <= Constants.MINIMAL_EPSILON_ALLOWED) throw new BadInputException(EPSILON + MUST_BE_POSITIVE);
             return epsilon;
         }catch (NumberFormatException e){
-            throw new BadRequestException(EPSILON + MUST_BE_A_VALID_NUMBER);
+            throw new BadInputException(EPSILON + MUST_BE_A_VALID_NUMBER);
         }
 
     }
 
-    private static Double getPowerFactor(String arg) {
+    private static Double getPowerFactor(String arg) throws BadInputException {
         try{
             return Double.valueOf(arg);
         }catch (NumberFormatException e){
-            throw new BadRequestException(POWER_FACTOR + MUST_BE_A_VALID_NUMBER);
+            throw new BadInputException(POWER_FACTOR + MUST_BE_A_VALID_NUMBER);
         }
     }
 
-    private static void validateInput(String[] args)  {
+    private static void validateInput(String[] args) throws BadInputException {
         Utils.CheckNotNull(args, "args");
         if(args.length < MINIMAL_INPUT_SIZE){
-            throw new BadRequestException(INPUT_IS_MISSING_ARGUMENTS);
+            throw new BadInputException(INPUT_IS_MISSING_ARGUMENTS);
         }
     }
 

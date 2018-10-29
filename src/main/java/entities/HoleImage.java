@@ -1,12 +1,11 @@
 package entities;
 
+import utils.ImageUtils;
 import org.opencv.core.Mat;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static utils.ImageUtils.isHole;
 
 /**
  * Created by livne
@@ -50,7 +49,7 @@ public class HoleImage {
     public void findHoles(){
         for(int row = 0; row < image.rows(); row++){
             for (int col = 0; col < image.cols(); col++){
-                if(isHole(image, row, col)){
+                if(ImageUtils.isHole(image, row, col)){
                     holes.put(new Coordinate(row, col), true);
                 }
             }
@@ -62,7 +61,7 @@ public class HoleImage {
         for(Coordinate coordinate: holes.keySet()){
             List<Coordinate> neighbors = pixelConnectivity.getNeighbors(coordinate);
             neighbors.stream()
-                    .filter(boundary -> !isHole(image, boundary.getRow(), boundary.getCol()))
+                    .filter(boundary -> !ImageUtils.isHole(image, boundary.getRow(), boundary.getCol()))
                     .forEach(boundary -> boundaries.put(boundary, getByCoordinate(boundary)));
         }
     }

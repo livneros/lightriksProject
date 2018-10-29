@@ -1,5 +1,7 @@
 package entities;
 
+import entities.Coordinate;
+import entities.FourConnected;
 import org.junit.Assert;
 import org.junit.Test;
 
