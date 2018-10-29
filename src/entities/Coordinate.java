@@ -32,8 +32,9 @@ public class Coordinate {
     public int getLeftUpperCornerCol(){
         return this.col - 1;
     }
+
     boolean isItTheSameCoordinate(int row, int col) {
-        return row == this.row && col == this.col;
+        return row == getRow() && col == getCol();
     }
 
     public double euclideanDistance(Coordinate v){
