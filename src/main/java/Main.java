@@ -22,7 +22,6 @@ public class Main {
     private static final String POWER_FACTOR = "Power factor";
     private static final String EPSILON = "Epsilon";
     private static final String OUTPUT_FILE_NAME = "output.jpg";
-    private static final int LOWEST_NON_NEGATIVE = 0;
 
     public static void main(String[] args) throws IOException, UnSupportedConnectivityType, MaskImageSizeException, BadInputException {
         validateInput(args);

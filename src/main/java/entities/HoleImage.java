@@ -30,14 +30,6 @@ public class HoleImage {
         return image;
     }
 
-    public WeightFunction getWeightFunction() {
-        return weightFunction;
-    }
-
-    public PixelConnectivity getPixelConnectivity() {
-        return pixelConnectivity;
-    }
-
     public Map<Coordinate, Boolean> getHoles() {
         return holes;
     }

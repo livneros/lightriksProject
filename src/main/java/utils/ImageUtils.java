@@ -79,17 +79,17 @@ public class ImageUtils {
 
 
     private static Mat getImage(String imagePath) throws IOException {
-        String opencvpath = System.getProperty(USER_DIRECTORY) + FILES_FOLDER;
-        System.load(opencvpath + OPENCV_LIB_VERSION + OPENCV_LIB_PREFIX);
+        String openCvPath = System.getProperty(USER_DIRECTORY) + FILES_FOLDER;
+        System.load(openCvPath + OPENCV_LIB_VERSION + OPENCV_LIB_PREFIX);
         File input = new File(imagePath);
         BufferedImage image = ImageIO.read(input);
-        Mat sourceImage = getImageAcoordingRgbOrGrayScale(image);
+        Mat sourceImage = getImageAccordingRgbOrGrayScale(image);
         byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
         sourceImage.put(0,0, pixels);
         return sourceImage;
     }
 
-    private static Mat getImageAcoordingRgbOrGrayScale(BufferedImage image) {
+    private static Mat getImageAccordingRgbOrGrayScale(BufferedImage image) {
         if(image.getRaster().getNumBands() == RGB_CHANNELS_SIZE) {
              return new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
         }else{

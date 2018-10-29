@@ -8,25 +8,23 @@ public class PixelConnectivityFactory {
     public enum PixelConnectivityTypes{
         EIGHT(8),
         FOUR(4);
-        private int sign;
-        PixelConnectivityTypes(int sign) {
-            this.sign = sign;
+        private final int value;
+        PixelConnectivityTypes(int value) {
+            this.value = value;
         }
-
-        public int getSign() {
-            return sign;
-        }
+        public int getValue(){return value;}
     }
 
     public static PixelConnectivity getPixelConnectivity(int type)
             throws UnSupportedConnectivityType {
-        switch (type){
-            case 8:
-                return new EightConnected();
-            case 4:
-                return new FourConnected();
-            default:
-                throw new UnSupportedConnectivityType();
+        if (type == PixelConnectivityTypes.EIGHT.getValue()) {
+            return new EightConnected();
+        }
+        else if(type == PixelConnectivityTypes.FOUR.getValue()){
+            return new FourConnected();
+        }
+        else{
+            throw new UnSupportedConnectivityType();
         }
     }
 }
