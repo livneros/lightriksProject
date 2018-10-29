@@ -1,9 +1,7 @@
 import entities.*;
 import org.opencv.core.Mat;
-import utils.BadInputException;
 import utils.Constants;
 import utils.ImageUtils;
-import utils.Utils;
 import utils.exceptions.MaskImageSizeException;
 
 import java.io.IOException;
@@ -37,7 +35,6 @@ public class Main {
             maskImagePath = args[MASK_IMAGE_PATH_INDEX];
         }
         Mat outputImage = ImageUtils.getMaskedImage(imagePath, maskImagePath);
-//        mask(outputImage);
         ImageUtils.save_image(outputImage, "temp.jpg");
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
         PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType);
@@ -82,7 +79,6 @@ public class Main {
     }
 
     private static void validateInput(String[] args) throws BadInputException {
-        Utils.CheckNotNull(args, "args");
         if(args.length < MINIMAL_INPUT_SIZE){
             throw new BadInputException(INPUT_IS_MISSING_ARGUMENTS);
         }
