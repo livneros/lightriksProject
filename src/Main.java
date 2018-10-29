@@ -1,97 +1,96 @@
 import entities.*;
 import entities.implementations.CoordinateImpl;
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
-import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
+import utils.ImageUtils;
+import utils.Utils;
+import utils.exceptions.MaskImageSizeException;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.File;
+import javax.ws.rs.BadRequestException;
 import java.io.IOException;
+
+import static utils.ImageUtils.save_image;
 
 public class Main {
 
-    public static final String OPENCV_LIB_VERSION = "opencv_java343";
-    public static final String OPENCV_LIB_PREFIX = ".dll";
-    public static final String FILES_FOLDER = "\\files\\";
-    public static final String USER_DIRECTORY = "user.dir";
-    public static final String TARGET_DIRECTORY = "target\\";
-    public static final String OUTPUT_FILE_NAME = "output.jpg";
 
-    public static void main(String[] args) throws IOException, UnSupportedConnectivityType {
-        String imagePath = args[0];
-//        nu.pattern.OpenCV.;
-        double powerFactor = Double.valueOf(args[1]);
-        double epsilon = Double.valueOf(args[2]);
-        int connectivityType = Integer.valueOf(args[3]);
-        Mat outputImage = getImage(imagePath);
-        System.out.println(outputImage.rows());
-        System.out.println(outputImage.cols());
-        for(int i = 150; i< 170; i++){
-            for(int j = 90; j< 110; j++){
-                outputImage.put(i, j, 0.0);
-            }
+    private static final int POWER_FACTOR_INDEX = 0;
+    private static final int EPSILON_INDEX = 1;
+    private static final int CONNECTIVITY_TYPE_INDEX = 2;
+    private static final int IMAGE_PATH_INDEX = 3;
+    private static final int MASK_IMAGE_PATH_INDEX = 4;
+    private static final int MINIMAL_INPUT_SIZE = 4;
+    private static final int INPUT_SIZE_WITH_A_MASK_IMAGE= 5;
+    private static final String INPUT_IS_MISSING_ARGUMENTS = "Input is missing arguments.";
+    private static final String MUST_BE_A_VALID_NUMBER = " must be a valid number";
+    private static final String MUST_BE_POSITIVE = " must be a positive number";
+    private static final String POWER_FACTOR = "Power factor";
+    private static final String EPSILON = "Epsilon";
+    private static final String OUTPUT_FILE_NAME = "output.jpg";
+    private static final int LOWEST_NON_NEGATIVE = 0;
+
+    public static void main(String[] args) throws IOException, UnSupportedConnectivityType, MaskImageSizeException {
+        validateInput(args);
+        double powerFactor = getPowerFactor(args[POWER_FACTOR_INDEX]);
+        double epsilon = getEpsilon(args[EPSILON_INDEX]);
+        int connectivityType = getConnectivityType(args[CONNECTIVITY_TYPE_INDEX]);
+        String imagePath = args[IMAGE_PATH_INDEX];
+        String maskImagePath = null;
+        if(isMaskImageProvided(args)){
+            maskImagePath = args[MASK_IMAGE_PATH_INDEX];
         }
+        Mat outputImage = ImageUtils.getMaskedImage(imagePath, maskImagePath);
+//        mask(outputImage);
         save_image(outputImage, "temp.jpg");
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
         PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType, outputImage);
         HoleImage holeImage = new HoleImage(outputImage, weightFunction, pixelConnectivity, new CoordinateImpl());
-        outputImage = holeImage.fixHoles();
-        save_image(outputImage, OUTPUT_FILE_NAME);
+        holeImage.fixHoles();
+        ImageUtils.save_image(outputImage, OUTPUT_FILE_NAME);
     }
 
-    private static void save_image(Mat outputImage, String outputFileName) {
-        Imgcodecs.imwrite(TARGET_DIRECTORY  + outputFileName, outputImage);
-    }
-
-    private static Mat getImage(String imagePath) throws IOException {
-        String opencvpath = System.getProperty(USER_DIRECTORY) + FILES_FOLDER;
-        System.load(opencvpath + OPENCV_LIB_VERSION + OPENCV_LIB_PREFIX);
-        File input = new File(imagePath);
-        BufferedImage image = ImageIO.read(input);
-        byte[] pixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        Mat sourceImage = new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
-        sourceImage.put(0,0, pixels);
-        Mat outputImage = new Mat();
-        Imgproc.cvtColor(sourceImage, outputImage , Imgproc.COLOR_RGB2GRAY);
-
-        return outputImage;
-    }
-
-    public static BufferedImage Mat2BufferedImage(Mat m){
-// source: http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
-// Fastest code
-// The output can be assigned either to a BufferedImage or to an Image
-
-        int type = BufferedImage.TYPE_BYTE_GRAY;
-        if ( m.channels() > 1 ) {
-            type = BufferedImage.TYPE_3BYTE_BGR;
+    private static void mask(Mat outputImage) {
+        for(int i = 30; i< 130; i++){
+            for(int j = 40; j< 60; j++){
+                outputImage.put(i, j, 0.0);
+            }
         }
-        int bufferSize = m.channels()*m.cols()*m.rows();
-        byte [] b = new byte[bufferSize];
-        m.get(0,0,b); // get all the pixels
-        BufferedImage image = new BufferedImage(m.cols(),m.rows(), type);
-        final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-        System.arraycopy(b, 0, targetPixels, 0, b.length);
-        return image;
     }
 
-    public static void displayImage(Image img2)
-    {
-        //BufferedImage img=ImageIO.read(new File("/HelloOpenCV/lena.png"));
-        ImageIcon icon=new ImageIcon(img2);
-        JFrame frame=new JFrame();
-        frame.setLayout(new FlowLayout());
-        frame.setSize(img2.getWidth(null)+50, img2.getHeight(null)+50);
-        JLabel lbl=new JLabel();
-        lbl.setIcon(icon);
-        frame.add(lbl);
-        frame.setVisible(true);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    private static Integer getConnectivityType(String arg) {
+        try{
+            return Integer.valueOf(arg);
+        }catch (NumberFormatException e){
+            throw new BadRequestException(POWER_FACTOR + MUST_BE_A_VALID_NUMBER);
+        }
+    }
 
+    private static Double getEpsilon(String arg) {
+        try{
+            double epsilon =  Double.valueOf(arg);
+            if(epsilon <= LOWEST_NON_NEGATIVE) throw new BadRequestException(EPSILON + MUST_BE_POSITIVE);
+            return epsilon;
+        }catch (NumberFormatException e){
+            throw new BadRequestException(EPSILON + MUST_BE_A_VALID_NUMBER);
+        }
+
+    }
+
+    private static Double getPowerFactor(String arg) {
+        try{
+            return Double.valueOf(arg);
+        }catch (NumberFormatException e){
+            throw new BadRequestException(POWER_FACTOR + MUST_BE_A_VALID_NUMBER);
+        }
+    }
+
+    private static void validateInput(String[] args)  {
+        Utils.CheckNotNull(args, "args");
+        if(args.length < MINIMAL_INPUT_SIZE){
+            throw new BadRequestException(INPUT_IS_MISSING_ARGUMENTS);
+        }
+    }
+
+    private static boolean isMaskImageProvided(String[] args) {
+        return args.length == INPUT_SIZE_WITH_A_MASK_IMAGE;
     }
 }

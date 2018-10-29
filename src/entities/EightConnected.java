@@ -5,6 +5,8 @@ import org.opencv.core.Mat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static utils.ImageUtils.isHole;
+
 /**
  * Created by livne
  * on 25/10/2018.
@@ -23,7 +25,7 @@ public class EightConnected extends PixelConnectivity {
                 if(coordinate.isItTheSameCoordinate(row, col)){
                     continue;
                 }
-                if(!isHole(row, col)){
+                if(!isHole(image, row, col)){
                     boundaries.put(new Coordinate(row, col), image.get(row, col)[0]);
                 }
             }

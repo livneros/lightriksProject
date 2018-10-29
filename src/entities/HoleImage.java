@@ -6,6 +6,8 @@ import org.opencv.core.Mat;
 import java.util.HashMap;
 import java.util.Map;
 
+import static utils.ImageUtils.isHole;
+
 /**
  * Created by livne
  * on 25/10/2018.
@@ -50,7 +52,7 @@ public class HoleImage {
     public void findHoles(){
         for(int row = 0; row < image.rows(); row++){
             for (int col = 0; col < image.cols(); col++){
-                if(pixelConnectivity.isHole(row, col)){
+                if(isHole(image, row, col)){
                     holes.put(new Coordinate(row, col), true);
                 }
             }

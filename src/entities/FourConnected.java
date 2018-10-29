@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static utils.ImageUtils.isHole;
+
 /**
  * Created by livne
  * on 25/10/2018.
@@ -30,7 +32,7 @@ public class FourConnected extends PixelConnectivity{
             for(int col: possibleMovements){
                 specRow = coordinate.getRow() + row;
                 specCol = coordinate.getCol() + col;
-                if(!isHole(specRow, specCol)){
+                if(!isHole(image, specRow, specCol)){
                     boundaries.put(new Coordinate(specRow, specCol), image.get(specRow, specCol)[0]);
                 }
             }
