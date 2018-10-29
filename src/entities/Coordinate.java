@@ -36,4 +36,9 @@ public class Coordinate {
         return row == this.row && col == this.col;
     }
 
+    public double euclideanDistance(Coordinate v){
+        double sumOfDifferences = Math.pow(this.getRow() - v.getRow(), 2) + Math.pow(this.getCol() - v.getCol(), 2);
+        return Math.sqrt(sumOfDifferences);
+    }
+
 }

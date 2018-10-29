@@ -1,6 +1,5 @@
 package entities;
 
-import entities.implementations.CoordinateImpl;
 import org.opencv.core.Mat;
 
 import java.util.HashMap;
@@ -16,15 +15,13 @@ public class HoleImage {
     private Mat image;
     private WeightFunction weightFunction;
     private PixelConnectivity pixelConnectivity;
-    CoordinateImpl coordinateImpl;
     Map<Coordinate, Boolean> holes;
     Map<Coordinate, Double> boundaries;
 
-    public HoleImage(Mat image, WeightFunction weightFunction, PixelConnectivity pixelConnectivity, CoordinateImpl coordinateImpl) {
+    public HoleImage(Mat image, WeightFunction weightFunction, PixelConnectivity pixelConnectivity) {
         this.image = image;
         this.weightFunction = weightFunction;
         this.pixelConnectivity = pixelConnectivity;
-        this.coordinateImpl = coordinateImpl;
         holes = new HashMap<>();
         boundaries = new HashMap<>();
     }
@@ -68,7 +65,7 @@ public class HoleImage {
 
     public void fillHoles(){
         for(Coordinate coordinate: holes.keySet()){
-            double fixedValue = weightFunction.solve(coordinate, boundaries, coordinateImpl);
+            double fixedValue = weightFunction.solve(coordinate, boundaries);
             setPixel(coordinate, fixedValue);
         }
     }

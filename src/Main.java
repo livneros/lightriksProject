@@ -1,5 +1,4 @@
 import entities.*;
-import entities.implementations.CoordinateImpl;
 import org.opencv.core.Mat;
 import utils.ImageUtils;
 import utils.Utils;
@@ -43,7 +42,7 @@ public class Main {
         save_image(outputImage, "temp.jpg");
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
         PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType, outputImage);
-        HoleImage holeImage = new HoleImage(outputImage, weightFunction, pixelConnectivity, new CoordinateImpl());
+        HoleImage holeImage = new HoleImage(outputImage, weightFunction, pixelConnectivity);
         holeImage.fixHoles();
         ImageUtils.save_image(outputImage, OUTPUT_FILE_NAME);
     }

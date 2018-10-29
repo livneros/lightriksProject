@@ -1,19 +1,16 @@
 package entities;
 
-import entities.implementations.CoordinateImpl;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;
-import static utils.Constants.*;
 
 import static org.mockito.Mockito.when;
+import static utils.Constants.DEFAULT_DELTA;
 
 public class CoordinateTest {
 
-    private CoordinateImpl impl;
 
     public CoordinateTest() {
-        impl = new CoordinateImpl();
     }
 
     @Test
@@ -27,7 +24,8 @@ public class CoordinateTest {
         int col = 2;
         when(u.getCol()).thenReturn(col);
         when(v.getCol()).thenReturn(col);
-        double distance = impl.euclideanDistance(u, v);
+        when(u.euclideanDistance(v)).thenCallRealMethod();
+        double distance = u.euclideanDistance(v);
         Assert.assertEquals(0, distance, DEFAULT_DELTA);
     }
 
@@ -42,7 +40,8 @@ public class CoordinateTest {
         int col = 0;
         when(u.getCol()).thenReturn(col);
         when(v.getCol()).thenReturn(col);
-        double distance = impl.euclideanDistance(u, v);
+        when(u.euclideanDistance(v)).thenCallRealMethod();
+        double distance = u.euclideanDistance(v);
         Assert.assertEquals(0, distance, DEFAULT_DELTA);
     }
 
@@ -59,7 +58,8 @@ public class CoordinateTest {
         when(v.getRow()).thenReturn(vRow);
         when(u.getCol()).thenReturn(uCol);
         when(v.getCol()).thenReturn(vCol);
-        double distance = impl.euclideanDistance(u, v);
+        when(u.euclideanDistance(v)).thenCallRealMethod();
+        double distance = u.euclideanDistance(v);
         Assert.assertEquals(5, distance, DEFAULT_DELTA);
     }
 }
