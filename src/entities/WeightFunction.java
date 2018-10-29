@@ -23,7 +23,7 @@ public class WeightFunction {
 
     double solvePerCoordinate(Coordinate u, Coordinate v){
         double euclideanDistance = u.euclideanDistance(v);
-        double denominator = Math.pow(euclideanDistance, this.powerFactor) + this.epsilon;
+        double denominator = Math.pow(euclideanDistance, getPowerFactor()) + getEpsilon();
         return Math.pow(denominator, -1);
     }
 

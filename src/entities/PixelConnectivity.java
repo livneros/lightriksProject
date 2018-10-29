@@ -1,25 +1,14 @@
 package entities;
 
-import org.opencv.core.Mat;
-
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by livne
  * on 25/10/2018.
  */
-public abstract class PixelConnectivity {
-    protected Mat image;
+public interface PixelConnectivity {
 
-    public PixelConnectivity(Mat image) {
-        this.image = image;
-    }
+    List<Coordinate> getNeighbors(Coordinate coordinate);
 
-
-    public Mat getImage() {
-        return image;
-    }
-
-    public abstract Map<Coordinate, Double> getBoundaries(Coordinate coordinate);
 }
 

@@ -1,7 +1,5 @@
 package entities;
 
-import org.opencv.core.Mat;
-
 /**
  * Created by livne
  * on 25/10/2018.
@@ -20,13 +18,13 @@ public class PixelConnectivityFactory {
         }
     }
 
-    public static PixelConnectivity getPixelConnectivity(int type, Mat image)
+    public static PixelConnectivity getPixelConnectivity(int type)
             throws UnSupportedConnectivityType {
         switch (type){
             case 8:
-                return new EightConnected(image);
+                return new EightConnected();
             case 4:
-                return new FourConnected(image);
+                return new FourConnected();
             default:
                 throw new UnSupportedConnectivityType();
         }

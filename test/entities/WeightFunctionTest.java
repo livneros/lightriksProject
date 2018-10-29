@@ -25,11 +25,14 @@ public class WeightFunctionTest {
     public void solvePerCoordinate_basicParams() {
         powerFactor = 2;
         epsilon = DEFAULT_EPSILON;
-        weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
+        weightFunction = mock(WeightFunction.class);
         Coordinate u = mock(Coordinate.class);
         Coordinate v = mock(Coordinate.class);
         double distance = 0.0;
         when(u.euclideanDistance(v)).thenReturn(distance);
+        when(weightFunction.getEpsilon()).thenReturn(epsilon);
+        when(weightFunction.getPowerFactor()).thenReturn(powerFactor);
+        when(weightFunction.solvePerCoordinate(u, v)).thenCallRealMethod();
         double solveSol = weightFunction.solvePerCoordinate(u, v);
         Assert.assertEquals(1, solveSol, DEFAULT_DELTA);
     }
@@ -38,24 +41,30 @@ public class WeightFunctionTest {
     public void solvePerCoordinate_almostZeroEpsilon() {
         powerFactor = 2;
         epsilon = MINIMAL_EPSILON_ALLOWED;
-        weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
+        weightFunction = mock(WeightFunction.class);
         Coordinate u = mock(Coordinate.class);
         Coordinate v = mock(Coordinate.class);
         double distance = 0.0;
         when(u.euclideanDistance(v)).thenReturn(distance);
+        when(weightFunction.getEpsilon()).thenReturn(epsilon);
+        when(weightFunction.getPowerFactor()).thenReturn(powerFactor);
+        when(weightFunction.solvePerCoordinate(u, v)).thenCallRealMethod();
         double solveSol = weightFunction.solvePerCoordinate(u, v);
         assertTrue(solveSol < Double.MAX_VALUE);
     }
 
     @Test
     public void solvePerCoordinate_negativePowerFactor() {
-        powerFactor = -1;
+        powerFactor = -1.0;
         epsilon = DEFAULT_EPSILON;
-        weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
+        weightFunction = mock(WeightFunction.class);
         Coordinate u = mock(Coordinate.class);
         Coordinate v = mock(Coordinate.class);
         double distance = 2.0;
         when(u.euclideanDistance(v)).thenReturn(distance);
+        when(weightFunction.getEpsilon()).thenReturn(epsilon);
+        when(weightFunction.getPowerFactor()).thenReturn(powerFactor);
+        when(weightFunction.solvePerCoordinate(u, v)).thenCallRealMethod();
         double solveSol = weightFunction.solvePerCoordinate(u, v);
         Assert.assertEquals(0.66667, solveSol, DEFAULT_DELTA);
     }

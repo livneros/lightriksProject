@@ -1,33 +1,26 @@
 package entities;
 
-import org.opencv.core.Mat;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static utils.ImageUtils.isHole;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by livne
  * on 25/10/2018.
  */
-public class EightConnected extends PixelConnectivity {
+public class EightConnected implements PixelConnectivity {
 
-    public EightConnected(Mat image) {
-        super(image);
+    public EightConnected() {
     }
 
     @Override
-    public Map<Coordinate, Double> getBoundaries(Coordinate coordinate) {
-        Map<Coordinate, Double> boundaries = new HashMap<>();
+    public List<Coordinate> getNeighbors(Coordinate coordinate) {
+        List<Coordinate> boundaries = new ArrayList<>();
         for(int row = coordinate.getLeftUpperCornerRow(); row <= coordinate.getRightLowerCornerRow(); row++ ) {
             for (int col = coordinate.getLeftUpperCornerCol(); col <= coordinate.getRightLowerCornerCol(); col++) {
                 if(coordinate.isItTheSameCoordinate(row, col)){
                     continue;
                 }
-                if(!isHole(image, row, col)){
-                    boundaries.put(new Coordinate(row, col), image.get(row, col)[0]);
-                }
+                boundaries.add(new Coordinate(row, col));
             }
         }
         return boundaries;

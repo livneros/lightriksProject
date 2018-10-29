@@ -47,7 +47,7 @@ public class ImageUtils {
     }
 
     private static void mask(Mat mask) {
-        double[] insert = {-1.0,-1.0,-1.0};
+        double[] insert = {0.0,0.0,0.0};
         for(int i = 20; i< 40; i++){
             for (int j =20; j<40; j++){
                 mask.put(i, j, insert);

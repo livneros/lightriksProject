@@ -3,6 +3,7 @@ package entities;
 import org.opencv.core.Mat;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static utils.ImageUtils.isHole;
@@ -59,8 +60,15 @@ public class HoleImage {
 
     public void findBoundaries(){
         for(Coordinate coordinate: holes.keySet()){
-            boundaries.putAll(pixelConnectivity.getBoundaries(coordinate));
+            List<Coordinate> neighbors = pixelConnectivity.getNeighbors(coordinate);
+            neighbors.stream()
+                    .filter(boundary -> !isHole(image, boundary.getRow(), boundary.getCol()))
+                    .forEach(boundary -> boundaries.put(boundary, getByCoordinate(boundary)));
         }
+    }
+
+    public double getByCoordinate(Coordinate coordinate){
+        return image.get(coordinate.getRow(), coordinate.getCol())[0];
     }
 
     public void fillHoles(){

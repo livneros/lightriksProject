@@ -7,6 +7,7 @@ import utils.exceptions.MaskImageSizeException;
 import javax.ws.rs.BadRequestException;
 import java.io.IOException;
 
+import static utils.Constants.MINIMAL_EPSILON_ALLOWED;
 import static utils.ImageUtils.save_image;
 
 public class Main {
@@ -41,7 +42,7 @@ public class Main {
 //        mask(outputImage);
         save_image(outputImage, "temp.jpg");
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
-        PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType, outputImage);
+        PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType);
         HoleImage holeImage = new HoleImage(outputImage, weightFunction, pixelConnectivity);
         holeImage.fixHoles();
         ImageUtils.save_image(outputImage, OUTPUT_FILE_NAME);
@@ -66,7 +67,7 @@ public class Main {
     private static Double getEpsilon(String arg) {
         try{
             double epsilon =  Double.valueOf(arg);
-            if(epsilon <= LOWEST_NON_NEGATIVE) throw new BadRequestException(EPSILON + MUST_BE_POSITIVE);
+            if(epsilon <= MINIMAL_EPSILON_ALLOWED) throw new BadRequestException(EPSILON + MUST_BE_POSITIVE);
             return epsilon;
         }catch (NumberFormatException e){
             throw new BadRequestException(EPSILON + MUST_BE_A_VALID_NUMBER);
