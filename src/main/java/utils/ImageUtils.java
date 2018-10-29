@@ -27,7 +27,7 @@ public class ImageUtils {
     private static final String TARGET_DIRECTORY = "target\\";
     private static final int B_W_IMAGE_CHANNELS_SIZE = 1;
     private static final int IMAGE_BACKGROUND_ADDITION = 50;
-    static final double HOLE = 0.0;
+    public static final double HOLE = 0.0;
     public static final int RGB_CHANNELS_SIZE = 3;
 
     public static void save_image(Mat outputImage, String outputFileName) {
@@ -47,8 +47,8 @@ public class ImageUtils {
     }
 
     private static void mask(Mat mask) {
-        double[] insert = {0.0,0.0,0.0};
-        for(int i = 20; i< 40; i++){
+        double[] insert = {HOLE,HOLE,HOLE};
+        for(int i = 20; i< 30; i++){
             for (int j =20; j<40; j++){
                 mask.put(i, j, insert);
             }
@@ -59,7 +59,7 @@ public class ImageUtils {
         validateMaskSize(baseImage, mask);
         for(int row = 0; row< mask.rows(); row ++){
             for (int col = 0; col< mask.cols(); col++){
-                if(isHole(mask, row, col)){
+                if(isHole(mask.get(row, col))){
                     baseImage.put(row, col, HOLE);
                 }
             }
@@ -73,8 +73,8 @@ public class ImageUtils {
     }
 
 
-    public static boolean isHole(Mat image, int row, int col) {
-        return image.get(row, col)[0] == HOLE;
+    public static boolean isHole(double[] value) {
+        return value[0] == HOLE;
     }
 
 

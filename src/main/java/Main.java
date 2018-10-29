@@ -34,11 +34,12 @@ public class Main {
             maskImagePath = args[MASK_IMAGE_PATH_INDEX];
         }
         Mat outputImage = ImageUtils.getMaskedImage(imagePath, maskImagePath);
+//        mask(outputImage);
         ImageUtils.save_image(outputImage, "temp.jpg");
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
         PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType);
-        HoleImage holeImage = new HoleImage(outputImage, weightFunction, pixelConnectivity);
-        holeImage.fixHoles();
+        AlgorithmSolver algorithmSolver = new AlgorithmSolver(outputImage, weightFunction, pixelConnectivity);
+        algorithmSolver.fixHoles();
         ImageUtils.save_image(outputImage, OUTPUT_FILE_NAME);
     }
 

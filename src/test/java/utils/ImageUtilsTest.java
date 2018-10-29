@@ -78,7 +78,7 @@ public class ImageUtilsTest {
         int row = 0;
         int col = 0;
         Mockito.when(image.get(row, col)).thenReturn(notHole);
-        Assert.assertFalse(ImageUtils.isHole(image, row, col));
+        Assert.assertFalse(ImageUtils.isHole(image.get(row, col)));
     }
     @Test
     public void isHole_Hole() throws Exception {
@@ -87,7 +87,7 @@ public class ImageUtilsTest {
         int col = 0;
         double[] res = {ImageUtils.HOLE};
         Mockito.when(image.get(row, col)).thenReturn(res);
-        Assert.assertTrue(ImageUtils.isHole(image, row, col));
+        Assert.assertTrue(ImageUtils.isHole(image.get(row, col)));
     }
 
 }
