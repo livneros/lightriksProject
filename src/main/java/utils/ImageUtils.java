@@ -35,6 +35,8 @@ public class ImageUtils {
     }
 
     public static Mat getMaskedImage(String imagePath, String maskImagePath) throws IOException, MaskImageSizeException {
+        String openCvPath = System.getProperty(USER_DIRECTORY) + FILES_FOLDER;
+        System.load(openCvPath + OPENCV_LIB_VERSION + OPENCV_LIB_PREFIX);
         Mat baseImage = getImage(imagePath);
         if(maskImagePath != null){
             convertToGrayScale(baseImage);
@@ -69,8 +71,6 @@ public class ImageUtils {
 
 
     private static Mat getImage(String imagePath) throws IOException {
-        String openCvPath = System.getProperty(USER_DIRECTORY) + FILES_FOLDER;
-        System.load(openCvPath + OPENCV_LIB_VERSION + OPENCV_LIB_PREFIX);
         File input = new File(imagePath);
         BufferedImage image = ImageIO.read(input);
         Mat sourceImage = getImageAccordingRgbOrGrayScale(image);
