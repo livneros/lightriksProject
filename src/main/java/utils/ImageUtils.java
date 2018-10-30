@@ -39,20 +39,10 @@ public class ImageUtils {
         if(maskImagePath != null){
             convertToGrayScale(baseImage);
             Mat mask = getImage(maskImagePath);
-            mask(mask);
             convertToGrayScale(mask);
             applyMask(baseImage, mask);
         }
         return baseImage;
-    }
-
-    private static void mask(Mat mask) {
-        double[] insert = {HOLE,HOLE,HOLE};
-        for(int i = 20; i< 30; i++){
-            for (int j =20; j<40; j++){
-                mask.put(i, j, insert);
-            }
-        }
     }
 
     private static void applyMask(Mat baseImage, Mat mask) throws MaskImageSizeException {

@@ -29,13 +29,8 @@ public class Main {
         double epsilon = getEpsilon(args[EPSILON_INDEX]);
         int connectivityType = getConnectivityType(args[CONNECTIVITY_TYPE_INDEX]);
         String imagePath = args[IMAGE_PATH_INDEX];
-        String maskImagePath = null;
-        if(isMaskImageProvided(args)){
-            maskImagePath = args[MASK_IMAGE_PATH_INDEX];
-        }
+        String maskImagePath = getMaskPathIfExists(args);
         Mat outputImage = ImageUtils.getMaskedImage(imagePath, maskImagePath);
-//        mask(outputImage);
-        ImageUtils.save_image(outputImage, "temp.jpg");
         WeightFunction weightFunction = WeightFunction.getInstance(powerFactor, epsilon);
         PixelConnectivity pixelConnectivity = PixelConnectivityFactory.getPixelConnectivity(connectivityType);
         AlgorithmSolver algorithmSolver = new AlgorithmSolver(outputImage, weightFunction, pixelConnectivity);
@@ -43,12 +38,11 @@ public class Main {
         ImageUtils.save_image(outputImage, OUTPUT_FILE_NAME);
     }
 
-    private static void mask(Mat outputImage) {
-        for(int i = 30; i< 130; i++){
-            for(int j = 40; j< 60; j++){
-                outputImage.put(i, j, 0.0);
-            }
+    private static String getMaskPathIfExists(String[] args) {
+        if(isMaskImageProvided(args)){
+            return args[MASK_IMAGE_PATH_INDEX];
         }
+        return null;
     }
 
     private static Integer getConnectivityType(String arg) throws BadInputException {
