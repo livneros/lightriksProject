@@ -2,7 +2,7 @@
 
    b. finding boundaries - for each hole, the algorithm iterates over constant number of neighbors 
 			   (depends on the connectivity type). Then, for each neighbor, in a constant time,
-			   the algorithm decides wether to add this neighbor into the bondary dictionary or not.
+			   the algorithm decides whether to add this neighbor into the boundary dictionary or not.
 			   Total running time will be O(n).
 
    c. filling holes - for each hole, the algorithm calculates its distance to each one of the boundaries.
@@ -21,4 +21,4 @@
 		   operating O(1) functions. 
 		2. Else, continue.
 			- Total running time will be O(n).
-	Implemented on AlgorithmSolver.fixHolesBonus().	   
+	Implemented on AlgorithmSolver.fixHolesBonus().
