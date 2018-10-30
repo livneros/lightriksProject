@@ -1,0 +1,24 @@
+1. a. finding holes - takes O(n).
+
+   b. finding boundaries - for each hole, the algorithm iterates over constant number of neighbors 
+			   (depends on the connectivity type). Then, for each neighbor, in a constant time,
+			   the algorithm decides wether to add this neighbor into the bondary dictionary or not.
+			   Total running time will be O(n).
+
+   c. filling holes - for each hole, the algorithm calculates its distance to each one of the boundaries.
+		      As mentioned, O(m) = c*O(n), were c depends on the connectivity type and finite, so total 
+		      running time will be O(n^2).
+
+2. The algorithm will iterate over the image in a spiral fashion:
+	-If the current pixel is a hole:
+		- Set the value of this pixel to the result of the weight function, over its "not holes" neighbors only.
+
+   Running time analysis: 
+	a. Iteration over the image takes O(n).
+
+	b. For each pixel:
+		1. If it is a hole, setting its new value will take O(1), as we only iterate over its neighbors, 
+		   operating O(1) functions. 
+		2. Else, continue.
+			- Total running time will be O(n).
+	Implemented on AlgorithmSolver.fixHolesBonus().	   
