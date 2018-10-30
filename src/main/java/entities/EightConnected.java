@@ -3,7 +3,7 @@ package entities;
 import java.util.List;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 25/10/2018.
  */
 public class EightConnected extends PixelConnectivity {

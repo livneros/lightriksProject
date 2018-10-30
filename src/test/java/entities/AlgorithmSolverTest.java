@@ -11,7 +11,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 /**
- * Created by livne
+ * Created by Livne
  * on 29/10/2018.
  */
 public class AlgorithmSolverTest {

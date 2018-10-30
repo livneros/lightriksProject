@@ -7,7 +7,7 @@ import org.opencv.core.Mat;
 import utils.exceptions.MaskImageSizeException;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 29/10/2018.
  */
 public class ImageUtilsTest {
@@ -72,7 +72,7 @@ public class ImageUtilsTest {
     }
 
     @Test
-    public void isHole_notHole() throws Exception {
+    public void isHole_notHole() {
         Mat image = Mockito.mock(Mat.class);
         double[] notHole = {300.0};
         int row = 0;
@@ -81,7 +81,7 @@ public class ImageUtilsTest {
         Assert.assertFalse(ImageUtils.isHole(image.get(row, col)));
     }
     @Test
-    public void isHole_Hole() throws Exception {
+    public void isHole_Hole() {
         Mat image = Mockito.mock(Mat.class);
         int row = 0;
         int col = 0;

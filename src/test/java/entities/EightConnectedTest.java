@@ -5,7 +5,7 @@ import org.junit.Test;
 import java.util.List;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 29/10/2018.
  */
 public class EightConnectedTest {

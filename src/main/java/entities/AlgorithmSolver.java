@@ -10,7 +10,7 @@ import java.util.Map;
 import static utils.ImageUtils.isHole;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 25/10/2018.
  */
 public class AlgorithmSolver {

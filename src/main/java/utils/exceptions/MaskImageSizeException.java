@@ -1,7 +1,7 @@
 package utils.exceptions;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 29/10/2018.
  */
 public class MaskImageSizeException extends Exception {

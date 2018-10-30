@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 25/10/2018.
  */
 public abstract class PixelConnectivity {

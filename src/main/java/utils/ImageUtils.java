@@ -17,7 +17,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 29/10/2018.
  */
 public class ImageUtils {

@@ -1,7 +1,7 @@
 package entities;
 
 /**
- * Created by livne
+ * Created by Livne
  * on 25/10/2018.
  */
 public class PixelConnectivityFactory {
