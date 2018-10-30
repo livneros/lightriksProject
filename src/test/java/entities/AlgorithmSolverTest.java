@@ -1,7 +1,9 @@
 package entities;
 
 import org.junit.Test;
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import utils.Constants;
 import utils.ImageUtils;
 
 import static org.junit.Assert.assertEquals;
@@ -46,4 +48,17 @@ public class AlgorithmSolverTest {
         assertEquals(1, algorithmSolver.getHoles().size());
         assertNotNull(algorithmSolver.getHoles().get(new Coordinate(0,0)));
     }
+
+
+    @Test
+    public void fillHoles_GetByCoordinate_with_A_Hole() {
+        ImageUtils.loadOpenCv();
+        Mat mat = new Mat(1, 1, CvType.CV_8UC1);
+        AlgorithmSolver algorithmSolver = new AlgorithmSolver(mat, null, null);
+        double fixedValue = 2.0;
+        Coordinate coordinate = new Coordinate(0, 0);
+        algorithmSolver.setPixel(coordinate, fixedValue);
+        assertEquals(fixedValue, algorithmSolver.getByCoordinate(coordinate), Constants.DEFAULT_DELTA);
+    }
+
 }

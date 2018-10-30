@@ -12,7 +12,7 @@ public class FourConnected extends PixelConnectivity{
     private static final int STEP_DOWN_OR_LEFT = -1;
     private static final int STEP_UP_OR_RIGHT = 1;
 
-    public FourConnected() {
+    FourConnected() {
         super();
     }
 

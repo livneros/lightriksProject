@@ -11,7 +11,7 @@ public abstract class PixelConnectivity {
 
     protected List<Coordinate> neighbors;
 
-    protected PixelConnectivity(){
+    PixelConnectivity(){
         neighbors = new ArrayList<>();
     }
 

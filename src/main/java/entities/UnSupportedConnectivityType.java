@@ -5,9 +5,9 @@ package entities;
  * on 25/10/2018.
  */
 public class UnSupportedConnectivityType extends Exception {
-    public static final String MSG = "unsupported connectivity type.";
+    private static final String MSG = "unsupported connectivity type.";
 
-    public UnSupportedConnectivityType() {
+    UnSupportedConnectivityType() {
         super(MSG);
     }
 }

@@ -3,8 +3,8 @@ package entities;
 import java.util.Map;
 
 public class WeightFunction {
-    public static final double INITIAL_DOUBLE = 0.0;
-    public static final double INITIAL_IN_CASE_OF_EMPTY_BOUNDARIES = 1.0;
+    private static final double INITIAL_DOUBLE = 0.0;
+    private static final double INITIAL_IN_CASE_OF_EMPTY_BOUNDARIES = 1.0;
     private static WeightFunction mInstance;
     private double powerFactor;
     private double epsilon;

@@ -2,6 +2,8 @@ package utils;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+import org.opencv.core.Range;
+import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import utils.exceptions.MaskImageSizeException;
@@ -35,8 +37,7 @@ public class ImageUtils {
     }
 
     public static Mat getMaskedImage(String imagePath, String maskImagePath) throws IOException, MaskImageSizeException {
-        String openCvPath = System.getProperty(USER_DIRECTORY) + FILES_FOLDER;
-        System.load(openCvPath + OPENCV_LIB_VERSION + OPENCV_LIB_PREFIX);
+        loadOpenCv();
         Mat baseImage = getImage(imagePath);
         if(maskImagePath != null){
             convertToGrayScale(baseImage);
@@ -45,6 +46,11 @@ public class ImageUtils {
             applyMask(baseImage, mask);
         }
         return baseImage;
+    }
+
+    public static void loadOpenCv() {
+        String openCvPath = System.getProperty(USER_DIRECTORY) + FILES_FOLDER;
+        System.load(openCvPath + OPENCV_LIB_VERSION + OPENCV_LIB_PREFIX);
     }
 
     private static void applyMask(Mat baseImage, Mat mask) throws MaskImageSizeException {
@@ -80,11 +86,8 @@ public class ImageUtils {
     }
 
     private static Mat getImageAccordingRgbOrGrayScale(BufferedImage image) {
-        if(image.getRaster().getNumBands() == RGB_CHANNELS_SIZE) {
-             return new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC3);
-        }else{
-             return new Mat(image.getHeight(), image.getWidth(), CvType.CV_8UC1);
-        }
+        int cvType = image.getRaster().getNumBands() == RGB_CHANNELS_SIZE ? CvType.CV_8UC3 : CvType.CV_8UC1;
+        return new Mat(image.getHeight(), image.getWidth(), cvType);
     }
 
     private static void convertToGrayScale(Mat sourceImage) {

@@ -17,8 +17,8 @@ public class AlgorithmSolver {
     private Mat image;
     private WeightFunction weightFunction;
     private PixelConnectivity pixelConnectivity;
-    Map<Coordinate, Boolean> holes;
-    Map<Coordinate, Double> boundaries;
+    private Map<Coordinate, Boolean> holes;
+    private Map<Coordinate, Double> boundaries;
 
     public AlgorithmSolver(Mat image, WeightFunction weightFunction, PixelConnectivity pixelConnectivity) {
         this.image = image;
@@ -40,10 +40,10 @@ public class AlgorithmSolver {
         return boundaries;
     }
 
-    void findHoles(){
-        for(int row = 0; row < image.rows(); row++){
-            for (int col = 0; col < image.cols(); col++){
-                if(isHole(image.get(row, col))){
+    void findHoles() {
+        for (int row = 0; row < image.rows(); row++) {
+            for (int col = 0; col < image.cols(); col++) {
+                if (isHole(image.get(row, col))) {
                     holes.put(new Coordinate(row, col), true);
                 }
             }
@@ -51,8 +51,8 @@ public class AlgorithmSolver {
     }
 
 
-    public void findBoundaries(){
-        for(Coordinate coordinate: holes.keySet()){
+    private void findBoundaries() {
+        for (Coordinate coordinate : holes.keySet()) {
             List<Coordinate> neighbors = pixelConnectivity.getNeighbors(coordinate);
             neighbors.stream()
                     .filter(boundary -> !ImageUtils.isHole(image.get(boundary.getRow(), boundary.getCol())))
@@ -60,67 +60,50 @@ public class AlgorithmSolver {
         }
     }
 
-    public double getByCoordinate(Coordinate coordinate){
+    double getByCoordinate(Coordinate coordinate) {
         return image.get(coordinate.getRow(), coordinate.getCol())[0];
     }
 
-    private void fillHoles(){
-        for(Coordinate coordinate: holes.keySet()){
+    private void fillHoles() {
+        for (Coordinate coordinate : getHoles().keySet()) {
             double fixedValue = weightFunction.solve(coordinate, boundaries);
             setPixel(coordinate, fixedValue);
         }
     }
 
-    private void setPixel(Coordinate coordinate, double fixedValue) {
+    void setPixel(Coordinate coordinate, double fixedValue) {
         image.put(coordinate.getRow(), coordinate.getCol(), fixedValue);
     }
 
-    public Mat fixHoles() {
+    public void fixHoles() {
         findHoles();
         findBoundaries();
         fillHoles();
-        return image;
     }
 
 
-    public Mat fixHolesBonus()
-    {
-
+    public Mat fixHolesBonus() {
         int i, k = 0, l = 0, m = image.rows(), n = image.cols();
-        /*  k - starting row index
-        m - ending row index
-        l - starting column index
-        n - ending column index
-        i - iterator
-        */
-
-        while (k < m && l < n)
-        {
-            for (i = l; i < n; ++i)
-            {
+        while (k < m && l < n) {
+            for (i = l; i < n; ++i) {
                 assignApproximateValue(k, i);
             }
             k++;
 
-            for (i = k; i < m; ++i)
-            {
-                assignApproximateValue(i, n-1);
+            for (i = k; i < m; ++i) {
+                assignApproximateValue(i, n - 1);
             }
             n--;
 
-            if ( k < m)
-            {
-                for (i = n-1; i >= l; --i)
-                {
-                    assignApproximateValue(m-1, i);
+            if (k < m) {
+                for (i = n - 1; i >= l; --i) {
+                    assignApproximateValue(m - 1, i);
                 }
                 m--;
             }
 
-            if (l < n)
-            {
-                for (i = m-1; i >= k; --i)
-                {
+            if (l < n) {
+                for (i = m - 1; i >= k; --i) {
                     assignApproximateValue(i, l);
                 }
                 l++;
@@ -130,7 +113,7 @@ public class AlgorithmSolver {
     }
 
     private void assignApproximateValue(int i, int j) {
-        if(isHole(image.get(i, j))){
+        if (isHole(image.get(i, j))) {
             Map<Coordinate, Double> coordinateToValue = new HashMap<>();
             Coordinate coordinate = new Coordinate(i, j);
             List<Coordinate> neighbors = pixelConnectivity.getNeighbors(coordinate);

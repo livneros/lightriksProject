@@ -64,7 +64,7 @@ public class CoordinateTest {
     }
 
     @Test
-    public void isItTheSameCoordinate_yes() throws Exception {
+    public void isItTheSameCoordinate_yes() {
         Coordinate u = mock(Coordinate.class);
         int rowAndCol = 1;
         when(u.getCol()).thenReturn(rowAndCol);
@@ -73,7 +73,7 @@ public class CoordinateTest {
         Assert.assertTrue(u.isItTheSameCoordinate(rowAndCol, rowAndCol));
     }
     @Test
-    public void isItTheSameCoordinate_no() throws Exception {
+    public void isItTheSameCoordinate_no() {
         Coordinate u = mock(Coordinate.class);
         int rowAndColU = 1;
         int rowAndColV = 2;
@@ -82,4 +82,54 @@ public class CoordinateTest {
         when(u.isItTheSameCoordinate(rowAndColU, rowAndColU)).thenCallRealMethod();
         Assert.assertFalse(u.isItTheSameCoordinate(rowAndColV, rowAndColV));
     }
+
+    @Test
+    public void getLeftUpperCornerRow() {
+        Coordinate coordinate = new Coordinate(1,1);
+        int leftUpperCornerRow = coordinate.getLeftUpperCornerRow();
+        Assert.assertEquals(0, leftUpperCornerRow);
+    }
+    @Test
+    public void getRightLowerCornerRow() {
+        Coordinate coordinate = new Coordinate(1,1);
+        int getRightLowerCornerRow = coordinate.getRightLowerCornerRow();
+        Assert.assertEquals(2, getRightLowerCornerRow);
+    }
+    @Test
+    public void getRightLowerCornerCol() {
+        Coordinate coordinate = new Coordinate(1,1);
+        int getRightLowerCornerCol = coordinate.getRightLowerCornerCol();
+        Assert.assertEquals(2, getRightLowerCornerCol);
+    }
+    @Test
+    public void getLeftUpperCornerCol() {
+        Coordinate coordinate = new Coordinate(1,1);
+        int getLeftUpperCornerCol = coordinate.getLeftUpperCornerCol();
+        Assert.assertEquals(0, getLeftUpperCornerCol);
+    }
+    @Test
+    public void getLeftUpperCornerRow_edgePixelCase() {
+        Coordinate coordinate = new Coordinate(0,0);
+        int leftUpperCornerRow = coordinate.getLeftUpperCornerRow();
+        Assert.assertEquals(-1, leftUpperCornerRow);
+    }
+    @Test
+    public void getRightLowerCornerRow_edgePixelCase() {
+        Coordinate coordinate = new Coordinate(511,511);
+        int getRightLowerCornerRow = coordinate.getRightLowerCornerRow();
+        Assert.assertEquals(512, getRightLowerCornerRow);
+    }
+    @Test
+    public void getRightLowerCornerCol_edgePixelCase() {
+        Coordinate coordinate = new Coordinate(511,511);
+        int getRightLowerCornerCol = coordinate.getRightLowerCornerCol();
+        Assert.assertEquals(512, getRightLowerCornerCol);
+    }
+    @Test
+    public void getLeftUpperCornerCol_edgePixelCase() {
+        Coordinate coordinate = new Coordinate(0,0);
+        int getLeftUpperCornerCol = coordinate.getLeftUpperCornerCol();
+        Assert.assertEquals(-1, getLeftUpperCornerCol);
+    }
+
 }
