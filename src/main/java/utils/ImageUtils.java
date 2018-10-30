@@ -22,13 +22,13 @@ public class ImageUtils {
 
     private static final String OPENCV_LIB_VERSION = "opencv_java343";
     private static final String OPENCV_LIB_PREFIX = ".dll";
-    private static final String FILES_FOLDER = "\\files\\";
+    private static final String FILES_FOLDER = "\\src\\main\\resources\\";
     private static final String USER_DIRECTORY = "user.dir";
     private static final String TARGET_DIRECTORY = "target\\";
     private static final int B_W_IMAGE_CHANNELS_SIZE = 1;
     private static final int IMAGE_BACKGROUND_ADDITION = 50;
     public static final double HOLE = 0.0;
-    public static final int RGB_CHANNELS_SIZE = 3;
+    private static final int RGB_CHANNELS_SIZE = 3;
 
     public static void save_image(Mat outputImage, String outputFileName) {
         Imgcodecs.imwrite(TARGET_DIRECTORY  + outputFileName, outputImage);
